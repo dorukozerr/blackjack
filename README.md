@@ -12,3 +12,5 @@ on seperate terminal
 ```bash
 npm run play
 ```
+
+Results will be saved in the db.json
