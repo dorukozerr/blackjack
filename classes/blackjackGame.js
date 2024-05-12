@@ -22,7 +22,6 @@ class BlackjackGame {
       )
     )
 
-    this.deck.shuffle()
     this.playRound()
   }
 
@@ -52,6 +51,7 @@ class BlackjackGame {
         dealerHand: dealer.hand
       }
 
+      // Mock database call
       await addNewGame(game)
     } catch (error) {
       console.log('Error adding game to database:', error)
@@ -94,14 +94,19 @@ class BlackjackGame {
       if (dealerScore > 21 || playerScore > dealerScore) {
         console.log('Congratulations! You win.')
         this.win += 1
+
+        // Mock database call
         await updateGame(gameId, { ...game, winner: player.name })
       } else if (playerScore < dealerScore) {
         console.log('Sorry, you lose.')
         this.loss += 1
+
+        // Mock database call
         await updateGame(gameId, { ...game, winner: dealer.name })
       } else {
         console.log("It's a draw.")
 
+        // Mock database call
         await updateGame(gameId, { ...game, winner: 'Draw' })
       }
     }
