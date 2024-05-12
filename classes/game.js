@@ -9,6 +9,8 @@ class BlackjackGame {
     this.deck = new Deck()
     this.players = []
     this.delay = 0
+    this.win = 0
+    this.loss = 0
   }
 
   async startGame() {
@@ -71,6 +73,7 @@ class BlackjackGame {
 
     if (playerScore > 21) {
       console.log('Busted! You lose.')
+      this.loss += 1
     } else {
       while (dealer.getHandValue() < 17) {
         dealer.addCardToHand(this.deck.dealCard())
@@ -90,11 +93,11 @@ class BlackjackGame {
 
       if (dealerScore > 21 || playerScore > dealerScore) {
         console.log('Congratulations! You win.')
-
+        this.win += 1
         await updateGame(gameId, { ...game, winner: player.name })
       } else if (playerScore < dealerScore) {
         console.log('Sorry, you lose.')
-
+        this.loss += 1
         await updateGame(gameId, { ...game, winner: dealer.name })
       } else {
         console.log("It's a draw.")
@@ -109,6 +112,7 @@ class BlackjackGame {
         this.playRound()
       } else {
         console.log('Thanks for playing!')
+        console.log(`Wins: ${this.win}, Losses: ${this.loss}`)
         process.exit()
       }
     }, this.delay)
