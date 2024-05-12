@@ -11,28 +11,32 @@ const readDatabase = async callback => {
   })
 }
 
-const writeDatabase = async (data, callback) => {
-  await writeFile('db.json', JSON.stringify(data), 'utf8', callback)
-}
-
-const addNewGame = async (game, callback) => {
-  readDatabase(async games => {
-    games.push(game)
-    await writeDatabase(games, callback)
+const writeDatabase = async data => {
+  await writeFile('db.json', JSON.stringify(data), 'utf8', err => {
+    if (err) {
+      console.log('Error updating game in database:', err)
+    }
   })
 }
 
-const updateGame = async (id, game, callback) => {
+const addNewGame = async game => {
+  readDatabase(async games => {
+    games.push(game)
+    await writeDatabase(games)
+  })
+}
+
+const updateGame = async (id, game) => {
   readDatabase(async games => {
     const gameIndex = games.findIndex(game => game.id === id)
 
     if (gameIndex === -1) {
-      return callback(new Error('Game not found'))
+      return new Error('Game not found')
     }
 
     games[gameIndex] = game
 
-    await writeDatabase(games, callback)
+    await writeDatabase(games)
   })
 }
 

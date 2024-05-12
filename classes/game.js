@@ -50,11 +50,7 @@ class BlackjackGame {
         dealerHand: dealer.hand
       }
 
-      await addNewGame(game, err => {
-        if (err) {
-          console.log('Error adding game to database:', err)
-        }
-      })
+      await addNewGame(game)
     } catch (error) {
       console.log('Error adding game to database:', error)
     }
@@ -95,27 +91,15 @@ class BlackjackGame {
       if (dealerScore > 21 || playerScore > dealerScore) {
         console.log('Congratulations! You win.')
 
-        await updateGame(gameId, { ...game, winner: player.name }, err => {
-          if (err) {
-            console.log('Error updating game in database:', err)
-          }
-        })
+        await updateGame(gameId, { ...game, winner: player.name })
       } else if (playerScore < dealerScore) {
         console.log('Sorry, you lose.')
 
-        await updateGame(gameId, { ...game, winner: dealer.name }, err => {
-          if (err) {
-            console.log('Error updating game in database:', err)
-          }
-        })
+        await updateGame(gameId, { ...game, winner: dealer.name })
       } else {
         console.log("It's a draw.")
 
-        await updateGame(gameId, { ...game, winner: 'Draw' }, err => {
-          if (err) {
-            console.log('Error updating game in database:', err)
-          }
-        })
+        await updateGame(gameId, { ...game, winner: 'Draw' })
       }
     }
 
